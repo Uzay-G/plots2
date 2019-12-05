@@ -285,9 +285,7 @@ class NotesController < ApplicationController
       .order('nid DESC')
 
     @notes = Node.research_notes
-      .where(status: 1)
-      .limit(20)
-      .order('nid DESC')
+      .order('cached_likes DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
