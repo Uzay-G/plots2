@@ -30,6 +30,7 @@ class PostTest < ApplicationSystemTestCase
 
   end
 
+  test "location modal with coordinates"
   # Utility methods:
   
   def assert_page_reloads(message = "page should reload")
