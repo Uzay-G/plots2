@@ -128,6 +128,21 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil request.env['omniauth.auth']
   end
 
+  test 'should get oauth hash from /facebook' do
+    get '/auth/facebook'
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:facebook2]
+    post "/user_sessions/"
+    assert_equal flash[:warning], "das"
+    assert_equal flash[:error], "das"
+    assert_equal flash[:notice], "You were successfully logged in"
+    user = User.find_by(name: "jeff")
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
+    post "/reset", params: { key: user.reset_key, user: user }
+    assert_equal flash[:notice], "Your password was successfully changed."
+  end
+
   test 'redirect to multiple subscription route if user is not logged in and tries to subscribe to multiple tags' do
     get '/subscribe/multiple/tag/blog,kites,balloon,awesome'
     assert_redirected_to '/login?return_to=/subscribe/multiple/tag/blog,kites,balloon,awesome'

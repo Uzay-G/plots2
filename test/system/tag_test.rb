@@ -70,4 +70,16 @@ class TagTest < ApplicationSystemTestCase
 
   end
 
+  test "follow multiple tags" do
+    visit '/'
+
+    click_on 'Login'
+
+    fill_in("username-login", with: "jeff")
+    fill_in("password-signup", with: "secretive")
+    click_on "Log in"
+
+    find("#popover_button").click
+    find("")
+
 end

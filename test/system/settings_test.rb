@@ -4,19 +4,9 @@ class SettingsTest < ApplicationSystemTestCase
   Capybara.default_max_wait_time = 60
 
   def setup
-    visit '/'
 
-    click_on 'Login'
-
-    fill_in("username-login", with: "Bob")
-    fill_in("password-signup", with: "secretive")
-    click_on "Log in"
   end
-  # test 'viewing the settings page' do
-  #   visit '/settings'
 
-  #   take_screenshot
-  # end
 
   test "update password" do
     visit '/profile/edit'

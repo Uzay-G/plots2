@@ -58,4 +58,5 @@ class WikiCreationTest < ActionDispatch::IntegrationTest
     assert_equal "/wiki/#{title.parameterize}", path
     assert_equal flash[:notice], 'Edits saved.'
   end
+
 end

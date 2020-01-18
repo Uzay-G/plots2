@@ -111,7 +111,7 @@ class UserSessionsController < ApplicationController
 
   def handle_site_login_flow
     username = params[:user_session][:username] if params[:user_session]
-    u = User.find_by(username: username)
+    u = User.find_by(username: username) || User.find_by(email: username)
     if u && u.password_checker != 0
       n = u.password_checker
       hash = { 1 => "Facebook", 2 => "Github", 3 => "Google", 4 => "Twitter"  }
@@ -121,6 +121,7 @@ class UserSessionsController < ApplicationController
     else
       params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
       @user = User.find_by(username: username)
+    #  params[:return_to] = "/dashboard" if params[:return_to] == "/login" || params[:return_to] == "/signup"
       # try finding by email, if that exists
       if @user.nil? && !User.where(email: username).empty?
         @user = User.find_by(email: username)
@@ -128,7 +129,7 @@ class UserSessionsController < ApplicationController
       end
       if @user.nil?
         flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
-        redirect_to params[:return_to] || '/login'
+        redirect_to params[:return_to] || '/login' 
       elsif params[:user_session].nil? || @user&.status == 1
         # an existing Rails user
         if params[:user_session].nil? || @user

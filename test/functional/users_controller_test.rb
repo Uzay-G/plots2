@@ -337,4 +337,5 @@ class UsersControllerTest < ActionController::TestCase
     get :verify_email, params: { token: email_verification_token }
     assert_equal "Successfully verified email", flash[:notice]
   end
+
 end
